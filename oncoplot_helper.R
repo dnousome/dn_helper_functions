@@ -317,7 +317,7 @@ renameoncomat=function(dt){
     colnames(tempdt1)=tempname
     tempdt1
     }else if(is.data.frame(dt)){
-    tempdt1=mutate_all(dt,funs(renamefxn))
+    tempdt1=mutate_all(dt,~renamefxn(.x))
     tempdt1
     }else{
       renamefxn(dt)

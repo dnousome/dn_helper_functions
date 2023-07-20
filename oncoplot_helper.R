@@ -280,24 +280,32 @@ createMatCHM=function(m, g = NULL, chatty = TRUE, add_missing = FALSE,COSMIC=FAL
 }
 
 
+
 renamefxn=function(x){
   
-  x1=ifelse(grepl("frame shift",x,ignore.case = T),sub("frame shift","Frameshift",x,ignore.case = T),x)
-  x1=ifelse(grepl("\\bDel\\b",x1,ignore.case = T),sub("\\bDel\\b","deletion",x1,ignore.case = T),x1)
-  x1=ifelse(grepl("\\bins\\b",x1,ignore.case = T),sub("ins","insertion",x1,ignore.case = T),x1)
+  x1=ifelse(grepl("frame shift",x,ignore.case = T),gsub("frame shift","Frameshift",x,ignore.case = T),x)
+  
+  
+  x1=ifelse(grepl("\\bDel\\b",x1,ignore.case = T),gsub("\\bDel\\b","deletion",x1,ignore.case = T),x1)
+ # x1=ifelse(grepl("\\bDel",x1,ignore.case = T),sub("\\bDel","deletion",x1,ignore.case = T),x1)
+  
+  x1=ifelse(grepl("\\bIns\\b",x1,ignore.case = T),gsub("\\bIns\\b","insertion",x1,ignore.case = T),x1)
+#  x1=ifelse(grepl("\\bIns",x1,ignore.case = T),sub("\\bIns","insertion",x1,ignore.case = T),x1)
+  
+  x1=ifelse(grepl("In Frame",x1,ignore.case = T),gsub("In Frame","In frame",x1,ignore.case = T),x1)
+  
   x1=ifelse(grepl("Multi hit",x1,ignore.case = T),gsub("Multi hit","Multi hit mutation",x1,ignore.case = T),x1)
-  x1=ifelse(x1 %in% c("VUS","COSMIC"),x1,str_to_sentence(x1))
+  x1=ifelse(grepl("Mutation",x1,ignore.case = T),gsub("Mutation","mutation",x1,ignore.case = T),x1)
+  x1=ifelse(grepl("Site",x1,ignore.case = T),gsub("Site","site",x1,ignore.case = T),x1)
+  x1=ifelse(grepl("Vus",x1,ignore.case = T),gsub("Vus","VUS",x1,ignore.case = T),x1)
+    #x1=ifelse(x1 %in% c("VUS","COSMIC"),x1,str_to_sentence(x1,))
   
   
-  re1=function(y){
-    xtemp=str_locate(y, ";")
-    xtemp1=toupper(str_sub(y,xtemp+1))
-    str_sub(y,xtemp+1)<-xtemp1;y
-    gsub("Vus","VUS",y)
-  }
-  ifelse(grepl(";",x1),re1(x1),x1)
-
+  return(x1)
 }
+
+
+
 
 renameoncomat=function(dt){
   require(stringi)
